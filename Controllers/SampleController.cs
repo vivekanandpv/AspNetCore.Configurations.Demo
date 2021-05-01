@@ -14,13 +14,19 @@ namespace AspNetCore.Configurations.Demo.Controllers
     [ApiController]
     public class SampleController : ControllerBase
     {
-        private readonly List<Person> _persons;
+        private readonly IEnumerable<Person> _persons;
 
-        public SampleController(IOptions<List<Person>> options)
+        public SampleController(IEnumerable<Person> persons)
         {
-            _persons = options.Value;   //  Is it worth the complexity?
-            _persons.Add(new Person());
+            _persons = persons;
         }
+
+
+
+        //public SampleController(IConfiguration config)
+        //{
+        //    _persons = config.GetSection("Persons").Get<IEnumerable<Person>>();
+        //}
 
         public IActionResult Get()
         {
