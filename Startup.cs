@@ -42,7 +42,10 @@ namespace AspNetCore.Configurations.Demo
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    await context.Response.WriteAsync("Hello World!");
+                    var message = _configuration.GetValue<string>("Message");
+                    var year = _configuration.GetValue<int>("Year");
+                    var mobileNumber = _configuration.GetValue<long>("Person:Contact:MobileNumber");
+                    await context.Response.WriteAsync($"Message: {message}; year: {year}; mobile number: {mobileNumber}");
                 });
             });
         }
