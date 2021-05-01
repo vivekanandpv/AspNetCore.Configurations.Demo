@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace AspNetCore.Configurations.Demo.Controllers
@@ -14,11 +15,25 @@ namespace AspNetCore.Configurations.Demo.Controllers
     [ApiController]
     public class SampleController : ControllerBase
     {
-        private readonly IEnumerable<Person> _persons;
+        private Person _person;
 
-        public SampleController(IEnumerable<Person> persons)
+        public SampleController(IOptionsMonitor<Person> options)
         {
-            _persons = persons;
+            //  ok for most cases
+            _person = options.CurrentValue;
+
+            //  just in case the value changes between injection and use in get or another method
+            options.OnChange(p =>
+            {
+                if (!string.IsNullOrEmpty(p.FirstName) && p.FirstName.Length > 10)
+                {
+                    this._person = p;
+                }
+                else
+                {
+                    _person = new Person { FirstName = "Default FirstName", LastName = "Default LastName", City = "Default City" };
+                }
+            });
         }
 
 
@@ -30,7 +45,7 @@ namespace AspNetCore.Configurations.Demo.Controllers
 
         public IActionResult Get()
         {
-            return Ok(_persons.Count());
+            return Ok(_person.FirstName);
         }
     }
 }

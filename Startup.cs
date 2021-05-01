@@ -29,9 +29,7 @@ namespace AspNetCore.Configurations.Demo
         {
             services.AddControllers();
 
-            services.AddSingleton<IEnumerable<Person>>(
-                _configuration.GetSection("Persons").Get<IEnumerable<Person>>()
-            );
+            services.Configure<Person>(_configuration.GetSection("Person"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
