@@ -28,7 +28,7 @@ namespace AspNetCore.Configurations.Demo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.Configure<Person>(_configuration.GetSection("Person"));
+            services.Configure<List<Person>>(_configuration.GetSection("Persons"));
 
             //  Also possible
             //  services.AddOptions<Person>()

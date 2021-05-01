@@ -14,19 +14,17 @@ namespace AspNetCore.Configurations.Demo.Controllers
     [ApiController]
     public class SampleController : ControllerBase
     {
-        private readonly Person _person;
+        private readonly List<Person> _persons;
 
-        //  IConfiguration itself can be injected, but we don't prefer to work with large configuration
-        public SampleController(IOptions<Person> options, IConfiguration config)
+        public SampleController(IOptions<List<Person>> options)
         {
-            _person = options.Value;    //  preferred approach, cleaner approach
-
-            Person p = config.GetSection("Person").Get<Person>();   //  archaic, old approach
+            _persons = options.Value;   //  Is it worth the complexity?
+            _persons.Add(new Person());
         }
 
         public IActionResult Get()
         {
-            return Ok(_person.FirstName);
+            return Ok(_persons.Count());
         }
     }
 }
