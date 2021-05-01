@@ -17,23 +17,10 @@ namespace AspNetCore.Configurations.Demo.Controllers
     {
         private Person _person;
 
-        public SampleController(IOptionsMonitor<Person> options)
+        //  IOptionsSnapshot<T> is scoped for DI
+        public SampleController(IOptionsSnapshot<Person> options)
         {
-            //  ok for most cases
-            _person = options.CurrentValue;
-
-            //  just in case the value changes between injection and use in get or another method
-            options.OnChange(p =>
-            {
-                if (!string.IsNullOrEmpty(p.FirstName) && p.FirstName.Length > 10)
-                {
-                    this._person = p;
-                }
-                else
-                {
-                    _person = new Person { FirstName = "Default FirstName", LastName = "Default LastName", City = "Default City" };
-                }
-            });
+            _person = options.Value;
         }
 
 
