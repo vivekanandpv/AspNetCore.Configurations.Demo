@@ -50,6 +50,9 @@ namespace AspNetCore.Configurations.Demo
 
                     var friends = friendsSection.Get<string[]>();
 
+                    var year = _configuration.GetValue<int>("Year");
+                    var shouldGreet = _configuration.GetValue<bool>("ShouldGreet");
+
                     //  shorter version
                     //var friends = _configuration.GetSection("Friends").Get<string[]>();
 
